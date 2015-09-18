@@ -1,12 +1,20 @@
 package com.github.rkmk.mapper;
 
-import java.math.BigDecimal;
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
-
 import static java.util.Arrays.asList;
-import static java.util.Objects.nonNull;
+
+import java.math.BigDecimal;
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.skife.jdbi.org.antlr.runtime.misc.IntArray;
 
 public class FieldMapperFactories {
 
@@ -46,7 +54,7 @@ public class FieldMapperFactories {
     }
 
 
-    public static class BooleanMapperFactory implements FieldMapperFactory<Boolean>{
+    public static class BooleanMapperFactory extends FieldMapperAbstractFactory<Boolean> implements FieldMapperFactory<Boolean>{
         @Override
         public Boolean getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getBoolean(index));
@@ -58,7 +66,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class ByteMapperFactory implements FieldMapperFactory<Byte>{
+    public static class ByteMapperFactory extends FieldMapperAbstractFactory<Byte> implements FieldMapperFactory<Byte>{
         @Override
         public Byte getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getByte(index));
@@ -70,7 +78,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class ShortMapperFactory implements FieldMapperFactory<Short>{
+    public static class ShortMapperFactory extends FieldMapperAbstractFactory<Short> implements FieldMapperFactory<Short>{
         @Override
         public Short getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getShort(index));
@@ -82,7 +90,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class IntegerMapperFactory implements FieldMapperFactory<Integer>{
+    public static class IntegerMapperFactory extends FieldMapperAbstractFactory<Integer> implements FieldMapperFactory<Integer>{
         @Override
         public Integer getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getInt(index));
@@ -94,7 +102,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class LongMapperFactory implements FieldMapperFactory<Long>{
+    public static class LongMapperFactory extends FieldMapperAbstractFactory<Long> implements FieldMapperFactory<Long>{
         @Override
         public Long getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getLong(index));
@@ -106,7 +114,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class FloatMapperFactory implements FieldMapperFactory<Float>{
+    public static class FloatMapperFactory extends FieldMapperAbstractFactory<Float> implements FieldMapperFactory<Float>{
         @Override
         public Float getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getFloat(index));
@@ -118,7 +126,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class DoubleMapperFactory implements FieldMapperFactory<Double>{
+    public static class DoubleMapperFactory extends FieldMapperAbstractFactory<Double> implements FieldMapperFactory<Double>{
         @Override
         public Double getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getDouble(index));
@@ -130,7 +138,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class BigDecimalMapperFactory implements FieldMapperFactory<BigDecimal>{
+    public static class BigDecimalMapperFactory extends FieldMapperAbstractFactory<BigDecimal> implements FieldMapperFactory<BigDecimal>{
         @Override
         public BigDecimal getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getBigDecimal(index));
@@ -142,7 +150,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class TimestampMapperFactory implements FieldMapperFactory<Timestamp>{
+    public static class TimestampMapperFactory extends FieldMapperAbstractFactory<Timestamp> implements FieldMapperFactory<Timestamp>{
         @Override
         public Timestamp getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getTimestamp(index));
@@ -154,7 +162,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class TimeMapperFactory implements FieldMapperFactory<Time>{
+    public static class TimeMapperFactory extends FieldMapperAbstractFactory<Time> implements FieldMapperFactory<Time>{
         @Override
         public Time getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getTime(index));
@@ -166,7 +174,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class DateMapperFactory implements FieldMapperFactory<Date>{
+    public static class DateMapperFactory extends FieldMapperAbstractFactory<Date> implements FieldMapperFactory<Date>{
         @Override
         public Date getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Date date = new Date(rs.getDate(index).getTime());
@@ -179,7 +187,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class StringMapperFactory implements FieldMapperFactory<String>{
+    public static class StringMapperFactory extends FieldMapperAbstractFactory<String> implements FieldMapperFactory<String>{
         @Override
         public String getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             return getNullOrValue(type,rs, rs.getString(index));
@@ -191,12 +199,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class IntegerArrayMapperFactory implements FieldMapperFactory<Integer[]>{
+    public static class IntegerArrayMapperFactory extends FieldMapperAbstractFactory<Integer[]> implements FieldMapperFactory<Integer[]>{
 
         @Override
         public Integer[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (Integer[])array.getArray() : null ;
+            return (array != null) ? (Integer[])array.getArray() : null ;
         }
 
         @Override
@@ -205,12 +213,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class IntArrayMapperFactory implements FieldMapperFactory<int[]>{
+    public static class IntArrayMapperFactory extends FieldMapperAbstractFactory<int[]> implements FieldMapperFactory<int[]>{
 
         @Override
         public int[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (int[])array.getArray() : null ;
+            return (array != null) ? (int[])array.getArray() : null ;
         }
 
         @Override
@@ -219,12 +227,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class StringArrayMapperFactory implements FieldMapperFactory<String[]>{
+    public static class StringArrayMapperFactory extends FieldMapperAbstractFactory<String[]> implements FieldMapperFactory<String[]>{
 
         @Override
         public String[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (String[])array.getArray() : null ;
+            return (array != null) ? (String[])array.getArray() : null ;
         }
 
         @Override
@@ -233,12 +241,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class LongObjectArrayMapperFactory implements FieldMapperFactory<Long[]>{
+    public static class LongObjectArrayMapperFactory extends FieldMapperAbstractFactory<Long[]> implements FieldMapperFactory<Long[]>{
 
         @Override
         public Long[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (Long[])array.getArray() : null ;
+            return (array != null) ? (Long[])array.getArray() : null ;
         }
 
         @Override
@@ -247,12 +255,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class LongArrayMapperFactory implements FieldMapperFactory<long[]>{
+    public static class LongArrayMapperFactory extends FieldMapperAbstractFactory<long[]> implements FieldMapperFactory<long[]>{
 
         @Override
         public long[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (long[])array.getArray() : null ;
+            return (array != null) ? (long[])array.getArray() : null ;
         }
 
         @Override
@@ -261,12 +269,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class FloatObjectArrayMapperFactory implements FieldMapperFactory<Float[]>{
+    public static class FloatObjectArrayMapperFactory extends FieldMapperAbstractFactory<Float[]> implements FieldMapperFactory<Float[]>{
 
         @Override
         public Float[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (Float[])array.getArray() : null ;
+            return (array != null) ? (Float[])array.getArray() : null ;
         }
 
         @Override
@@ -275,12 +283,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class FloatArrayMapperFactory implements FieldMapperFactory<float[]>{
+    public static class FloatArrayMapperFactory extends FieldMapperAbstractFactory<float[]> implements FieldMapperFactory<float[]>{
 
         @Override
         public float[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (float[])array.getArray() : null ;
+            return (array != null) ? (float[])array.getArray() : null ;
         }
 
         @Override
@@ -289,12 +297,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class DoubleObjectArrayMapperFactory implements FieldMapperFactory<Double[]>{
+    public static class DoubleObjectArrayMapperFactory extends FieldMapperAbstractFactory<Double[]> implements FieldMapperFactory<Double[]>{
 
         @Override
         public Double[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (Double[])array.getArray() : null ;
+            return (array != null) ? (Double[])array.getArray() : null ;
         }
 
         @Override
@@ -303,12 +311,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class DoubleArrayMapperFactory implements FieldMapperFactory<double[]>{
+    public static class DoubleArrayMapperFactory extends FieldMapperAbstractFactory<double[]> implements FieldMapperFactory<double[]>{
 
         @Override
         public double[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (double[])array.getArray() : null ;
+            return (array != null) ? (double[])array.getArray() : null ;
         }
 
         @Override
@@ -317,12 +325,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class BigDecimalArrayMapperFactory implements FieldMapperFactory<BigDecimal[]>{
+    public static class BigDecimalArrayMapperFactory extends FieldMapperAbstractFactory<BigDecimal[]> implements FieldMapperFactory<BigDecimal[]>{
 
         @Override
         public BigDecimal[] getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             Array array = rs.getArray(index);
-            return nonNull(array) ? (BigDecimal[])array.getArray() : null ;
+            return (array != null) ? (BigDecimal[])array.getArray() : null ;
         }
 
         @Override
@@ -331,12 +339,12 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class EnumMapperFactory implements FieldMapperFactory<Enum> {
+    public static class EnumMapperFactory extends FieldMapperAbstractFactory<Enum> implements FieldMapperFactory<Enum> {
 
         @Override
         public Enum getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
             String value = rs.getString(index);
-            return nonNull(value) ? Enum.valueOf((Class<Enum>) type, value) : null ;
+            return (value != null) ? Enum.valueOf((Class<Enum>) type, value) : null ;
         }
 
         @Override
@@ -345,7 +353,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class ObjectMapperFactory implements FieldMapperFactory<Object> {
+    public static class ObjectMapperFactory extends FieldMapperAbstractFactory<Object> implements FieldMapperFactory<Object> {
 
         @Override
         public Object getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
@@ -358,7 +366,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class ListMapperFactory implements FieldMapperFactory<List> {
+    public static class ListMapperFactory extends FieldMapperAbstractFactory<List> implements FieldMapperFactory<List> {
 
         @Override
         public List getValue(ResultSet rs, int index, Class<?> type) throws SQLException {
@@ -372,7 +380,7 @@ public class FieldMapperFactories {
         }
     }
 
-    public static class SetMapperFactory implements FieldMapperFactory<Set> {
+    public static class SetMapperFactory extends FieldMapperAbstractFactory<Set> implements FieldMapperFactory<Set> {
 
         @Override
         public Set getValue(ResultSet rs, int index, Class<?> type) throws SQLException {

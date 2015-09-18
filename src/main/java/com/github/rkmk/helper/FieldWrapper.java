@@ -1,12 +1,11 @@
 package com.github.rkmk.helper;
 
-import com.github.rkmk.mapper.FieldHelper;
+import static com.github.rkmk.mapper.FieldHelper.set;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import static com.github.rkmk.mapper.FieldHelper.set;
-import static java.util.Objects.isNull;
+import com.github.rkmk.mapper.FieldHelper;
 
 public class FieldWrapper {
 
@@ -31,7 +30,7 @@ public class FieldWrapper {
 
     public void setValue(Object value, HashMap<String, Object> instanceMap) {
         Object object = instanceMap.get(nameSpace);
-        if(isNull(object)) {
+        if(object == null) {
             object = FieldHelper.getInstance(classType);
             instanceMap.put(nameSpace, object);
         }

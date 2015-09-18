@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BigDecimalMapperFactory implements FieldMapperFactory<BigDecimal>{
+public class BigDecimalMapperFactory extends FieldMapperAbstractFactory<BigDecimal> implements FieldMapperFactory<BigDecimal>{
 
     @Override
     public BigDecimal getValue(ResultSet rs, int index, Class<?> type) throws SQLException {

@@ -1,19 +1,18 @@
 package com.github.rkmk.mapper;
 
-import com.github.rkmk.annotations.ColumnName;
-import com.github.rkmk.annotations.OneToMany;
-import com.github.rkmk.annotations.OneToOne;
-import com.github.rkmk.annotations.PrimaryKey;
-import com.github.rkmk.helper.FieldWrapper;
+import static com.github.rkmk.helper.FieldWrapper.rootClassNameSpace;
+import static com.github.rkmk.mapper.FieldHelper.getParameterisedReturnType;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.github.rkmk.helper.FieldWrapper.rootClassNameSpace;
-import static com.github.rkmk.mapper.FieldHelper.getParameterisedReturnType;
-import static java.util.Objects.nonNull;
+import com.github.rkmk.annotations.ColumnName;
+import com.github.rkmk.annotations.OneToMany;
+import com.github.rkmk.annotations.OneToOne;
+import com.github.rkmk.annotations.PrimaryKey;
+import com.github.rkmk.helper.FieldWrapper;
 
 public class AnnotatedFieldFactory {
 
@@ -71,7 +70,7 @@ public class AnnotatedFieldFactory {
 
     private static void processField(Map<String, FieldWrapper> fields, String nameSpace, Field field, Class<?> type) {
         ColumnName annotation = field.getAnnotation(ColumnName.class);
-        String name = nonNull(annotation) ? annotation.value() : field.getName();
+        String name = (annotation != null) ? annotation.value() : field.getName();
         fields.put(getResultSetFieldName(nameSpace, name), new FieldWrapper(type, field, nameSpace));
     }
 

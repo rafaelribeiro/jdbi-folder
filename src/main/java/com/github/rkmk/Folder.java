@@ -1,8 +1,6 @@
 package com.github.rkmk;
 
-import com.github.rkmk.mapper.AnnotatedField;
-import com.github.rkmk.mapper.AnnotatedFieldFactory;
-import com.github.rkmk.mapper.AnnotatedFields;
+import static com.github.rkmk.mapper.FieldHelper.get;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -10,9 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.github.rkmk.Hyphen.where;
-import static com.github.rkmk.mapper.FieldHelper.get;
-import static java.util.Objects.isNull;
+import com.github.rkmk.mapper.AnnotatedField;
+import com.github.rkmk.mapper.AnnotatedFieldFactory;
+import com.github.rkmk.mapper.AnnotatedFields;
+import com.google.common.collect.Collections2;
 
 public class Folder<T> {
 
@@ -24,7 +23,7 @@ public class Folder<T> {
     }
 
     private void mergeObject(Object oldObject, Object newObject) {
-        if(isNull(oldObject) || isNull(newObject))
+        if((oldObject == null) || (newObject == null))
             return;
 
         AnnotatedFields annotatedFields = fieldsMap.get(oldObject.getClass());
@@ -43,7 +42,7 @@ public class Folder<T> {
     private<M> void mergeCollection(Collection<M> collection, M currentObject) {
         Object alreadyPresentValue = getAlreadyPresentValue(collection, currentObject);
 
-        if(isNull(alreadyPresentValue) ) {
+        if((alreadyPresentValue == null) ) {
             collection.add(currentObject);
         }else {
             mergeObject(alreadyPresentValue, currentObject);
@@ -67,7 +66,7 @@ public class Folder<T> {
             Field field = primaryKeyField.getField();
             filter.put(primaryKeyField.getName(), get(field, object));
         }
-        Collection<M> result = where(collection, filter);
+        Collection<M> result = Collections2.filter(collection, new CustomPredicate<>(filter));
         return result.size() > 0 ? result.iterator().next() : null;
     }
 }

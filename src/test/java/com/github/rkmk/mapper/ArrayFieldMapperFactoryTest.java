@@ -1,6 +1,18 @@
 package com.github.rkmk.mapper;
 
-import lombok.Getter;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -8,16 +20,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.postgresql.jdbc4.Jdbc4Array;
 import org.skife.jdbi.v2.StatementContext;
 
-import java.math.BigDecimal;
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.*;
+import lombok.Getter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ArrayFieldMapperFactoryTest {
@@ -29,7 +34,7 @@ public class ArrayFieldMapperFactoryTest {
     @Mock
     StatementContext ctx;
 
-    CustomMapper<SampleArrayBean> mapper = new CustomMapper<>(SampleArrayBean.class, new ArrayList<>());
+    CustomMapper<SampleArrayBean> mapper = new CustomMapper<>(SampleArrayBean.class, Lists.newArrayList().getClass().cast(List.class));
 
 
     @Test

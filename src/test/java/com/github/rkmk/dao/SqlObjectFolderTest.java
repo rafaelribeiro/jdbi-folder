@@ -1,22 +1,28 @@
 package com.github.rkmk.dao;
 
-import com.github.rkmk.DaoTest;
-import com.github.rkmk.container.FoldingListContainerFactory;
-import com.github.rkmk.mapper.BigDecimalMapperFactory;
-import com.github.rkmk.mapper.CustomMapperFactory;
-import com.github.rkmk.model.*;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.skife.jdbi.v2.DBI;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.skife.jdbi.v2.DBI;
+
+import com.github.rkmk.DaoTest;
+import com.github.rkmk.container.FoldingListContainerFactory;
+import com.github.rkmk.mapper.BigDecimalMapperFactory;
+import com.github.rkmk.mapper.CustomMapperFactory;
+import com.github.rkmk.model.Actor;
+import com.github.rkmk.model.Album;
+import com.github.rkmk.model.Director;
+import com.github.rkmk.model.Movie;
+import com.github.rkmk.model.Musician;
+import com.github.rkmk.model.Song;
+import com.google.common.collect.Lists;
 
 public class SqlObjectFolderTest extends DaoTest {
     private SqlObjectDao dao;
@@ -44,7 +50,7 @@ public class SqlObjectFolderTest extends DaoTest {
         assertEquals(new Integer(1), movie.getMovieId());
         assertEquals("Jeans", movie.getMovieName());
         assertEquals(4, movie.getSongs().size());
-        List<String> songNames = movie.getSongs().stream().map(Song::getSongName).collect(toList());
+        List<String> songNames = Lists.newArrayList();//movie.getSongs().stream().map(Song::getSongName).collect(toList());
         assertTrue(songNames.containsAll(Arrays.asList("Anbe Anbe", "Columbus Columbus", "Enake Enaka", "Poovukul")));
     }
 
@@ -87,12 +93,12 @@ public class SqlObjectFolderTest extends DaoTest {
         assertEquals(2, movies.size());
         assertEquals("Jeans",movies.get(0).getMovieName());
         assertEquals(3, movies.get(0).getSongs().size());
-        List<String> songNames = movies.get(0).getSongs().stream().map(Song::getSongName).collect(toList());
+        List<String> songNames = Lists.newArrayList();//movies.get(0).getSongs().stream().map(Song::getSongName).collect(toList());
         assertTrue(songNames.containsAll(Arrays.asList("Anbe Anbe", "Columbus Columbus", "Enake Enaka")));
 
         assertEquals("Bombay", movies.get(1).getMovieName());
         assertEquals(2, movies.get(1).getSongs().size());
-        songNames = movies.get(1).getSongs().stream().map(Song::getSongName).collect(toList());
+        songNames = Lists.newArrayList();//movies.get(1).getSongs().stream().map(Song::getSongName).collect(toList());
         assertTrue(songNames.containsAll(Arrays.asList("Kannalane", "Uyire Uyire")));
     }
 
@@ -112,10 +118,10 @@ public class SqlObjectFolderTest extends DaoTest {
         Movie movie = dao.getMovie(1).getValues().get(0);
 
         assertEquals(2, movie.getSongs().size());
-        List<String> songNames = movie.getSongs().stream().map(Song::getSongName).collect(toList());
+        List<String> songNames = Lists.newArrayList();//movie.getSongs().stream().map(Song::getSongName).collect(toList());
         assertTrue(songNames.containsAll(Arrays.asList("Anbe Anbe", "Columbus Columbus")));
         assertEquals(2, movie.getActors().size());
-        List<String> actorNames = movie.getActors().stream().map(Actor::getActorName).collect(toList());
+        List<String> actorNames = Lists.newArrayList();//movie.getActors().stream().map(Actor::getActorName).collect(toList());
         assertTrue(actorNames.containsAll(Arrays.asList("Prashanth", "Aishwarya")));
     }
 

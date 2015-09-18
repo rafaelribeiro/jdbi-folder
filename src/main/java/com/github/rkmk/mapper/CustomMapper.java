@@ -1,18 +1,24 @@
 package com.github.rkmk.mapper;
 
 
-import com.github.rkmk.helper.FieldWrapper;
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
+import static com.github.rkmk.helper.FieldWrapper.rootClassNameSpace;
+import static com.github.rkmk.mapper.FieldHelper.getInstance;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static com.github.rkmk.helper.FieldWrapper.rootClassNameSpace;
-import static com.github.rkmk.mapper.FieldHelper.getInstance;
-import static java.util.Objects.nonNull;
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
+
+import com.github.rkmk.helper.FieldWrapper;
+import com.google.common.collect.Lists;
 
 public class CustomMapper<T> implements ResultSetMapper<T>
 {
@@ -22,7 +28,7 @@ public class CustomMapper<T> implements ResultSetMapper<T>
     private Map<Class<?>, AnnotatedFields> annotatedFieldsMap;
 
     public CustomMapper(Class<T> type) {
-        this(type, new ArrayList<>());
+        this(type, Lists.newArrayList().getClass().cast(List.class));
     }
 
     public CustomMapper(Class<T> type, List<FieldMapperFactory> overriddenFactories) {
@@ -92,7 +98,7 @@ public class CustomMapper<T> implements ResultSetMapper<T>
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
             String name = metaData.getColumnLabel(i).toLowerCase();
             String[] split = name.split("\\$");
-            if(split.length == 2 && nonNull(rs.getObject(name))) {
+            if(split.length == 2 && (rs.getObject(name) != null)) {
                 childClassNames.add(split[0]);
             }
         }

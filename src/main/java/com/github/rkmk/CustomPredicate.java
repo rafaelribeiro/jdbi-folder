@@ -1,10 +1,10 @@
 package com.github.rkmk;
 
-import com.github.rkmk.mapper.FieldHelper;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
+
+import com.github.rkmk.mapper.FieldHelper;
+import com.google.common.base.Predicate;
 
 public class CustomPredicate<T> implements Predicate<T> {
 
@@ -15,12 +15,12 @@ public class CustomPredicate<T> implements Predicate<T> {
         this.whereClause = whereClause;
     }
 
-    @Override
-    public boolean test(T t) {
-        Map<String, Object> objectMap = new HashMap<>();
+	@Override
+	public boolean apply(T t) {
+		Map<String, Object> objectMap = new HashMap<>();
         for (String field : whereClause.keySet()) {
             objectMap.put(field, FieldHelper.accessField(field, t));
         }
         return objectMap.size() == whereClause.size() && objectMap.equals(whereClause);
-    }
+	}
 }

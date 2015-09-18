@@ -1,12 +1,10 @@
 package com.github.rkmk.mapper;
 
-import org.skife.jdbi.v2.StatementContext;
-import org.skife.jdbi.v2.tweak.ResultSetMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static java.util.Objects.nonNull;
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
 public class EnumMapper implements ResultSetMapper<Enum> {
 
@@ -19,6 +17,6 @@ public class EnumMapper implements ResultSetMapper<Enum> {
     @Override
     public Enum map(int index, ResultSet r, StatementContext ctx) throws SQLException {
         String value = r.getString(1);
-        return nonNull(value) ? Enum.valueOf(type, value) : null;
+        return (value != null) ? Enum.valueOf(type, value) : null;
     }
 }

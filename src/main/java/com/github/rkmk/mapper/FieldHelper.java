@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static java.util.Objects.nonNull;
-
 public class FieldHelper {
 
     public static void set(Field field, Object object, Object value) {
@@ -51,7 +49,7 @@ public class FieldHelper {
             result = fieldArgTypes.length >0 ? (Class)fieldArgTypes[0] : null ;
         }
 
-        if(nonNull(result)) {
+        if((result != null)) {
             return result;
         }
         throw new IllegalArgumentException(String.format("The field type %s is not inferrable",field.getName()));

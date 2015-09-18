@@ -1,6 +1,8 @@
 package com.github.rkmk.mapper;
 
 import com.github.rkmk.annotations.ColumnName;
+import com.google.common.collect.Lists;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -32,7 +35,7 @@ public class CustomMapperTest {
     @Mock
     StatementContext ctx;
 
-    CustomMapper<SampleBean> mapper = new CustomMapper<>(SampleBean.class, new ArrayList<>());
+    CustomMapper<SampleBean> mapper = new CustomMapper<>(SampleBean.class, Lists.newArrayList().getClass().cast(List.class));
 
     @Test
     public void shouldSetValueOnPrivateField() throws Exception {
