@@ -98,7 +98,8 @@ public class CustomMapper<T> implements ResultSetMapper<T>
         for (int i = 1; i <= metaData.getColumnCount(); i++) {
             String name = metaData.getColumnLabel(i).toLowerCase();
             String[] split = name.split("\\$");
-            if(split.length == 2 && (rs.getObject(name) != null)) {
+            if(split.length == 2 //&& (rs.getObject(name) != null)
+            		) {
                 childClassNames.add(split[0]);
             }
         }
